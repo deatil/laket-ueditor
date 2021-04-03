@@ -1,0 +1,42 @@
+{
+    "name": "laket/laket-ueditor",
+    "description": "laket-admin 百度编辑器闪存插件",
+    "keywords": [
+        "laket",
+        "ueditor",
+        "admin",
+        "laket-admin"
+    ],
+    "homepage": "https://github.com/deatil/laket-ueditor",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "deatil",
+            "email": "deatil@github.com",
+            "homepage": "https://github.com/deatil",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.3",
+        "laket/laket-admin": "1.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laket\\Admin\\Ueditor\\": "src"
+        }
+    },
+    "laket" : {
+        "title": "百度编辑器",
+        "version": "1.0.0",
+        "adaptation": "1.0.*"
+    },
+    "extra": {
+        "think":{
+            "services":[
+                "Laket\\Admin\\Ueditor\\Service"
+            ]
+        }
+    }
+}
