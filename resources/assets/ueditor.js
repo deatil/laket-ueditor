@@ -12,17 +12,5 @@ $(function() {
              maximumWords: 50000, //允许的最大字符数
              serverUrl: laket_ueditor.upload_url,
          });
-         
-         // 本地化图片
-         $('#' + ueditor_name + 'grabimg').click(function() {
-             var con = ueditors[ueditor_name].getContent();
-             $.post(laket_ueditor.upload_url, { 
-                'content': con, 
-                'type': 'images' 
-             }, function(data) {
-                 ueditors[ueditor_name].setContent(data);
-                 layer.msg("图片本地化完成");
-             }, 'html');
-         })
      });
 });

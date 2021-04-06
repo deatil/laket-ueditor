@@ -10,8 +10,9 @@ use think\facade\Event;
 use Laket\Admin\Flash\Menu;
 use Laket\Admin\Facade\Flash;
 use Laket\Admin\Flash\Service as BaseService;
-use Laket\Admin\Settings\Event\ConfigModelGetFieldType as ConfigModelGetFieldTypeEvent;
-use Laket\Admin\Ueditor\Listener\ConfigModelGetFieldType as ConfigModelGetFieldTypeListener;
+use Laket\Admin\Event as AdminEvent;
+use Laket\Admin\Settings\Event as SettingsEvent;
+use Laket\Admin\Ueditor\Listener as UeditorListener;
 
 class Service extends BaseService
 {
@@ -124,12 +125,25 @@ class Service extends BaseService
         });
         
         // 事件
-        if (class_exists(ConfigModelGetFieldTypeEvent::class)) {
+        if (class_exists(SettingsEvent\ConfigModelGetFieldType::class)) {
             Event::listen(
-                ConfigModelGetFieldTypeEvent::class, 
-                ConfigModelGetFieldTypeListener::class
+                SettingsEvent\ConfigModelGetFieldType::class, 
+                UeditorListener\ConfigModelGetFieldType::class
             );
         }
+        
+        if (class_exists(SettingsEvent\ConfigModelGetConfigs::class)) {
+            Event::listen(
+                SettingsEvent\ConfigModelGetConfigs::class, 
+                UeditorListener\ConfigModelGetConfigs::class
+            );
+        }
+        
+        // 系统闪存插件
+        Event::listen(
+            AdminEvent\FlashModelGetConfigs::class, 
+            UeditorListener\FlashModelGetConfigs::class
+        );
     }
     
     /**
