@@ -18,13 +18,10 @@ class Attachment extends BaseController
     /**
      * 附件上传
      */
-    public function upload(
-        $dir = '', 
-        $sizelimit = -1, 
-        $extlimit = ''
-    ) {
+    public function upload($dir = '') 
+    {
         $UploadService = (new UploadService);
         
-        return $UploadService->save($dir, $sizelimit, $extlimit);
+        return $UploadService->save($dir);
     }
 }

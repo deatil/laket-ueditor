@@ -82,7 +82,8 @@ class Upload
         $this->request = request();
     }
 
-    public function save($dir = '', $sizelimit = -1, $extlimit = '') {
+    public function save($dir = '') 
+    {
         if ($dir == '') {
             return json([
                 'state' => '没有指定上传目录',
@@ -92,18 +93,66 @@ class Upload
         return $this->ueditor();
     }
 
+    private function ueditor()
+    {
+        $action = $this->request->get('action');
+        switch ($action) {
+            /* 获取配置信息 */
+            case 'config':
+                $result = $this->confing;
+                break;
+            /* 上传图片 */
+            case 'uploadimage':
+                return $this->saveFile('images', 'ueditor');
+                break;
+            /* 上传涂鸦 */
+            case 'uploadscrawl':
+                return $this->saveFile('images', 'ueditor_scrawl');
+                break;
+            /* 上传视频 */
+            case 'uploadvideo':
+                return $this->saveFile('videos', 'ueditor');
+                break;
+            /* 上传附件 */
+            case 'uploadfile':
+                return $this->saveFile('files', 'ueditor');
+                break;
+            /* 列出图片 */
+            case 'listimage':
+                return $this->showFileList('listimage');
+                break;
+
+            /* 列出附件 */
+            case 'listfile':
+                return $this->showFileList('listfile');
+                break;
+            default:
+                $result = [
+                    'state' => '请求地址出错',
+                ];
+                break;
+        }
+        
+        /* 输出结果 */
+        if (isset($_GET["callback"])) {
+            if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
+                return htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
+            } else {
+                return json(['state' => 'callback参数不合法']);
+            }
+        } else {
+            return json($result);
+        }
+    }
+
     /**
      * 保存附件
      * @param string $dir 附件存放的目录
      * @param string $from 来源
      * @return string|\think\response\Json
      */
-    protected function saveFile(
-        $dir = '', 
-        $from = '', 
-        $sizelimit = -1, 
-        $extlimit = ''
-    ) {
+    protected function saveFile($dir = '', $from = '') 
+    {
         if (!function_exists("finfo_open")) {
             return json([
                 'state' => '检测到环境未开启php_fileinfo拓展',
@@ -114,13 +163,6 @@ class Upload
         $size_limit = $dir == 'images' 
             ? laket_ueditor_config('upload_image_size') 
             : laket_ueditor_config('upload_file_size');
-        
-        if (-1 != $sizelimit) {
-            $sizelimit = intval($sizelimit);
-            if ($sizelimit >= 0 && (0 == $size_limit || ($size_limit > 0 && $sizelimit > 0 && $size_limit > $sizelimit))) {
-                $size_limit = $sizelimit;
-            }
-        }
         
         $size_limit = $size_limit * 1024;
         
@@ -233,57 +275,6 @@ class Upload
             }
         } else {
             return json(['state' => '上传失败']);
-        }
-    }
-
-    private function ueditor()
-    {
-        $action = $this->request->get('action');
-        switch ($action) {
-            /* 获取配置信息 */
-            case 'config':
-                $result = $this->confing;
-                break;
-            /* 上传图片 */
-            case 'uploadimage':
-                return $this->saveFile('images', 'ueditor');
-                break;
-            /* 上传涂鸦 */
-            case 'uploadscrawl':
-                return $this->saveFile('images', 'ueditor_scrawl');
-                break;
-            /* 上传视频 */
-            case 'uploadvideo':
-                return $this->saveFile('videos', 'ueditor');
-                break;
-            /* 上传附件 */
-            case 'uploadfile':
-                return $this->saveFile('files', 'ueditor');
-                break;
-            /* 列出图片 */
-            case 'listimage':
-                return $this->showFileList('listimage');
-                break;
-
-            /* 列出附件 */
-            case 'listfile':
-                return $this->showFileList('listfile');
-                break;
-            default:
-                $result = [
-                    'state' => '请求地址出错',
-                ];
-                break;
-        }
-        /* 输出结果 */
-        if (isset($_GET["callback"])) {
-            if (preg_match("/^[\w_]+$/", $_GET["callback"])) {
-                return htmlspecialchars($_GET["callback"]) . '(' . $result . ')';
-            } else {
-                return json(['state' => 'callback参数不合法']);
-            }
-        } else {
-            return json($result);
         }
     }
 
