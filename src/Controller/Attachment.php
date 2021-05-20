@@ -4,7 +4,7 @@ declare (strict_types = 1);
 
 namespace Laket\Admin\Ueditor\Controller;
 
-use Laket\Admin\Controller\Base as BaseController;
+use Laket\Admin\Flash\Controller as BaseController;
 use Laket\Admin\Ueditor\Service\Upload as UploadService;
 
 /**

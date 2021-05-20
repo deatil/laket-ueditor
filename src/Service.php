@@ -5,7 +5,6 @@ declare (strict_types = 1);
 namespace Laket\Admin\Ueditor;
 
 use think\facade\Console;
-use think\facade\Event;
 
 use Laket\Admin\Flash\Menu;
 use Laket\Admin\Facade\Flash;
@@ -126,21 +125,21 @@ class Service extends BaseService
         
         // 事件
         if (class_exists(SettingsEvent\ConfigModelGetFieldType::class)) {
-            Event::listen(
+            $this->app->event->listen(
                 SettingsEvent\ConfigModelGetFieldType::class, 
                 UeditorListener\ConfigModelGetFieldType::class
             );
         }
         
         if (class_exists(SettingsEvent\ConfigModelGetConfigs::class)) {
-            Event::listen(
+            $this->app->event->listen(
                 SettingsEvent\ConfigModelGetConfigs::class, 
                 UeditorListener\ConfigModelGetConfigs::class
             );
         }
         
         // 系统闪存插件
-        Event::listen(
+        $this->app->event->listen(
             AdminEvent\FlashModelGetConfigs::class, 
             UeditorListener\FlashModelGetConfigs::class
         );
