@@ -29,8 +29,8 @@
     },
     "laket" : {
         "title": "百度编辑器",
-        "version": "1.0.1",
-        "adaptation": "1.0.*"
+        "version": "1.1.0",
+        "adaptation": "1.1.*"
     },
     "extra": {
         "think":{
