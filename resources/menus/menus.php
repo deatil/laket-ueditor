@@ -2,7 +2,7 @@
 
 return [
     "title" => "百度编辑器",
-    "url" => "admin/laket-ueditor/upload",
+    "url" => "laket-ueditor/upload",
     "method" => "GET",
     "slug" => $this->slug,
     "icon" => "icon-shiyongwendang",
@@ -12,7 +12,7 @@ return [
     "children" => [
         [
             "title" => "百度编辑器上传",
-            "url" => "admin/laket-ueditor/upload",
+            "url" => "laket-ueditor/upload",
             "method" => "GET",
             "slug" => "admin.laket-ueditor.upload",
             "menu_show" => 0,
@@ -20,7 +20,7 @@ return [
         ],
         [
             "title" => "百度编辑器上传",
-            "url" => "admin/laket-ueditor/upload",
+            "url" => "laket-ueditor/upload",
             "method" => "POST",
             "slug" => "admin.laket-ueditor.upload-post",
             "menu_show" => 0,
