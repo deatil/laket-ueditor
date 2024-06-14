@@ -4,7 +4,7 @@ return [
     "title" => "百度编辑器",
     "url" => "laket-ueditor/upload",
     "method" => "GET",
-    "slug" => $this->slug,
+    "slug" => $slug,
     "icon" => "icon-shiyongwendang",
     "listorder" => 1055,
     "menu_show" => 0,
