@@ -50,7 +50,7 @@ class Service extends BaseService
         $this->loadEvent();
     }
     
-    protected function getInputItemJS($item)
+    protected function getInputItemJS()
     {
         $html = '
         <script type="text/javascript" src="'.assets("laket-ueditor/ueditor/ueditor.config.js").'"></script>
@@ -106,52 +106,63 @@ class Service extends BaseService
     protected function loadEvent()
     {
         // 系统插件设置
-        $this->app->event->listen('laket_admin_input_item_js_before', function($item) {
-            return $this->getInputItemJS($item);
+        add_action('laket_admin_input_item_js_before', function() {
+            echo $this->getInputItemJS();
         });
         
-        $this->app->event->listen('laket_admin_input_item', function($item) {
-            return $this->getInputItem($item);
+        add_action('laket_admin_input_item', function($item) {
+            echo $this->getInputItem($item);
         });
         
         // 设置插件
-        $this->app->event->listen('laket_settings_input_item_js_before', function($item) {
-            return $this->getInputItemJS($item);
+        add_action('laket_settings_input_item_js_before', function() {
+            echo $this->getInputItemJS();
         });
         
-        $this->app->event->listen('laket_settings_input_item', function($item) {
-            return $this->getInputItem($item);
+        add_action('laket_settings_input_item', function($item) {
+            echo $this->getInputItem($item);
         });
         
         // CMS
-        $this->app->event->listen('cms_input_item_js', function($item) {
-            return $this->getInputItemJS($item);
+        add_action('cms_input_item_js', function() {
+            echo $this->getInputItemJS();
         });
         
-        $this->app->event->listen('cms_input_item_editor', function($item) {
-            return laket_ueditor_bind("js-ueditor");
+        add_action('cms_input_item_editor', function($item) {
+            echo laket_ueditor_bind("js-ueditor");
         });
         
         // 事件
-        if (class_exists(SettingsEvent\ConfigModelGetFieldType::class)) {
-            $this->app->event->listen(
-                SettingsEvent\ConfigModelGetFieldType::class, 
-                UeditorListener\ConfigModelGetFieldType::class
-            );
-        }
+        add_filter('ConfigModelGetFieldType', function($fieldType) {
+            $fieldType[] = [
+                "name" => "ueditor",
+                "title" => "百度编辑器",
+                "ifoption" => 0,
+            ];
+            
+            return $fieldType;
+        });
         
-        if (class_exists(SettingsEvent\ConfigModelGetConfigs::class)) {
-            $this->app->event->listen(
-                SettingsEvent\ConfigModelGetConfigs::class, 
-                UeditorListener\ConfigModelGetConfigs::class
-            );
-        }
+        add_filter('ConfigModelGetConfigs', function($newConfigs, $configs) {
+            foreach ($configs as $key => $value) {
+                if ($value['type'] == 'ueditor') {
+                    $newConfigs[$value['name']] = htmlspecialchars_decode($value['value']);
+                }
+            }
+            
+            return $newConfigs;
+        });
         
         // 系统闪存插件
-        $this->app->event->listen(
-            AdminEvent\FlashModelGetConfigs::class, 
-            UeditorListener\FlashModelGetConfigs::class
-        );
+        add_filter('FlashModelGetConfigs', function($settingDatalist, $settinglist) {
+            foreach ($settinglist as $value) {
+                if ($value['type'] == 'ueditor') {
+                    $settingDatalist[$value['name']] = htmlspecialchars_decode($value['value']);
+                }
+            }
+            
+            return $settingDatalist;
+        });
     }
     
     /**
