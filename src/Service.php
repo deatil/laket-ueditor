@@ -53,14 +53,14 @@ class Service extends BaseService
     protected function getInputItemJS($item)
     {
         $html = '
-        <script type="text/javascript" src="laket-ueditor/ueditor/ueditor.config.js"></script>
-        <script type="text/javascript" src="laket-ueditor/ueditor/ueditor.all.js"></script>
+        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor/ueditor.config.js").'"></script>
+        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor/ueditor.all.js").'"></script>
         <script type="text/javascript">
         var laket_ueditor = {
             "upload_url": "'.laket_route("admin.laket-ueditor.upload").'?dir=images"
         };
         </script>
-        <script type="text/javascript" src="laket-ueditor/ueditor.js"></script>
+        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor.js").'"></script>
         ';
         
         return $html;
@@ -105,7 +105,7 @@ class Service extends BaseService
      */
     protected function loadEvent()
     {
-        // 系统闪存插件设置
+        // 系统插件设置
         $this->app->event->listen('laket_admin_input_item_js_before', function($item) {
             return $this->getInputItemJS($item);
         });
@@ -114,13 +114,22 @@ class Service extends BaseService
             return $this->getInputItem($item);
         });
         
-        // 设置闪存插件
+        // 设置插件
         $this->app->event->listen('laket_settings_input_item_js_before', function($item) {
             return $this->getInputItemJS($item);
         });
         
         $this->app->event->listen('laket_settings_input_item', function($item) {
             return $this->getInputItem($item);
+        });
+        
+        // CMS
+        $this->app->event->listen('cms_input_item_js', function($item) {
+            return $this->getInputItemJS($item);
+        });
+        
+        $this->app->event->listen('cms_input_item_editor', function($item) {
+            return laket_ueditor_bind("js-ueditor");
         });
         
         // 事件
