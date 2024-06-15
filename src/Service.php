@@ -49,57 +49,7 @@ class Service extends BaseService
         // 绑定事件
         $this->loadEvent();
     }
-    
-    protected function getInputItemJS()
-    {
-        $html = '
-        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor/ueditor.config.js").'"></script>
-        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor/ueditor.all.js").'"></script>
-        <script type="text/javascript">
-        var laket_ueditor = {
-            "upload_url": "'.laket_route("admin.laket-ueditor.upload").'?dir=images"
-        };
-        </script>
-        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor.js").'"></script>
-        ';
-        
-        return $html;
-    }
-    
-    protected function getInputItem($item)
-    {
-        $html = '';
-        
-        if (strtolower($item['type']) == 'ueditor') {
-            $html .= '
-            <div class="layui-form-item layui-form-text">
-                <label class="">
-                    '.$item['title'];
-            
-            if (isset($item['ifrequire']) && $item['ifrequire']) {
-                $html .= '&nbsp;<font color="red">*</font>';
-            }
-            
-            $html .= '
-                </label>
-                <div class="layui-form-field-label">
-                    <script type="text/plain" class="js-ueditor" id="'.$item['name'].'" name="item['.$item['name'].']">'.$item['value'].'</script>
-                </div>';
-                
-             if ($item['remark']) {
-                $html .= '
-                    <div class="layui-form-mid layui-word-aux">
-                        '.$item['remark'].'
-                    </div>
-                ';
-            }
-            
-            $html .= '</div>';
-        }
-        
-        return $html;
-    }
-    
+
     /**
      * 事件绑定
      */
@@ -163,6 +113,56 @@ class Service extends BaseService
             
             return $settingDatalist;
         });
+    }
+    
+    protected function getInputItemJS()
+    {
+        $html = '
+        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor/ueditor.config.js").'"></script>
+        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor/ueditor.all.js").'"></script>
+        <script type="text/javascript">
+        var laket_ueditor = {
+            "upload_url": "'.laket_route("admin.laket-ueditor.upload").'?dir=images"
+        };
+        </script>
+        <script type="text/javascript" src="'.assets("laket-ueditor/ueditor.js").'"></script>
+        ';
+        
+        return $html;
+    }
+    
+    protected function getInputItem($item)
+    {
+        $html = '';
+        
+        if (strtolower($item['type']) == 'ueditor') {
+            $html .= '
+            <div class="layui-form-item layui-form-text">
+                <label class="">
+                    '.$item['title'];
+            
+            if (isset($item['ifrequire']) && $item['ifrequire']) {
+                $html .= '&nbsp;<font color="red">*</font>';
+            }
+            
+            $html .= '
+                </label>
+                <div class="layui-form-field-label">
+                    <script type="text/plain" class="js-ueditor" id="'.$item['name'].'" name="item['.$item['name'].']">'.$item['value'].'</script>
+                </div>';
+                
+             if ($item['remark']) {
+                $html .= '
+                    <div class="layui-form-mid layui-word-aux">
+                        '.$item['remark'].'
+                    </div>
+                ';
+            }
+            
+            $html .= '</div>';
+        }
+        
+        return $html;
     }
     
     /**
