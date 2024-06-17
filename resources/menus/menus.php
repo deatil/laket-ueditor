@@ -16,7 +16,7 @@ return [
             "method" => "GET",
             "slug" => "admin.laket-ueditor.upload",
             "menu_show" => 0,
-            "listorder" => 5,
+            "listorder" => 15,
         ],
         [
             "title" => "百度编辑器上传",
