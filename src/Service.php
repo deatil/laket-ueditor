@@ -55,6 +55,15 @@ class Service extends BaseService
      */
     protected function loadEvent()
     {
+        // 通用事件
+        add_action('ueditor_js', function() {
+            echo $this->getInputItemJS();
+        });
+        
+        add_action('ueditor_init', function($item) {
+            echo laket_ueditor_bind("js-ueditor");
+        });
+        
         // 系统插件设置
         add_action('laket_admin_input_item_js_before', function() {
             echo $this->getInputItemJS();
@@ -64,7 +73,7 @@ class Service extends BaseService
             echo $this->getInputItem($item);
         });
         
-        // 设置插件
+        // 设置
         add_action('laket_settings_input_item_js_before', function() {
             echo $this->getInputItemJS();
         });
@@ -83,7 +92,7 @@ class Service extends BaseService
         });
         
         // 事件
-        add_filter('ConfigModelGetFieldType', function($fieldType) {
+        add_filter('config_model_get_field_type', function($fieldType) {
             $fieldType[] = [
                 "name" => "ueditor",
                 "title" => "百度编辑器",
@@ -93,7 +102,7 @@ class Service extends BaseService
             return $fieldType;
         });
         
-        add_filter('ConfigModelGetConfigs', function($newConfigs, $configs) {
+        add_filter('config_model_get_configs', function($newConfigs, $configs) {
             foreach ($configs as $key => $value) {
                 if ($value['type'] == 'ueditor') {
                     $newConfigs[$value['name']] = htmlspecialchars_decode($value['value']);
@@ -104,7 +113,7 @@ class Service extends BaseService
         });
         
         // 系统闪存插件
-        add_filter('FlashModelGetConfigs', function($settingDatalist, $settinglist) {
+        add_filter('flash_model_get_configs', function($settingDatalist, $settinglist) {
             foreach ($settinglist as $value) {
                 if ($value['type'] == 'ueditor') {
                     $settingDatalist[$value['name']] = htmlspecialchars_decode($value['value']);
