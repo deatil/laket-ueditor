@@ -133,7 +133,7 @@ class Service extends BaseService
         });
         
         // 系统闪存插件
-        add_filter('flash_model_get_configs', function($settingDatalist, $settinglist) {
+        add_filter('admin.flash_model.get_configs', function($settingDatalist, $settinglist) {
             foreach ($settinglist as $value) {
                 if ($value['type'] == 'ueditor') {
                     $settingDatalist[$value['name']] = htmlspecialchars_decode($value['value']);
